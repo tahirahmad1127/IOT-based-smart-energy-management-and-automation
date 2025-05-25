@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/services/auth.dart';
 import 'package:news_app/views/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ResetPasswordView extends StatefulWidget {
   const ResetPasswordView({super.key});
@@ -24,7 +25,10 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     setState(() => _isLoading = true);
 
     try {
-      await AuthServices().resetPassword(_emailController.text.trim());
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _emailController.text.trim(),
+      );
+
       showDialog(
         context: context,
         builder: (context) => const AlertDialog(
@@ -36,6 +40,18 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
           ),
         ),
       );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No user found with this email. Please use a registered email.'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: ${e.message}")),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: ${e.toString()}")),

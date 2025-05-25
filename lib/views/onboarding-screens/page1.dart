@@ -5,9 +5,7 @@ class Onboarding1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
+    return Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -23,16 +21,31 @@ class Onboarding1 extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Track. Save. Repeat.", style: GoogleFonts.poppins(
+                Padding(
+                  padding: const EdgeInsets.only(top: 173),
+                  child: Container(
+                      width: 300, height: 300,
+                      child: Image.asset('assets/images/onboarding1.png')),
+                ),
+                SizedBox(height: 32,),
+                Text("Welcome to Voltify",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
                     textStyle: TextStyle(fontWeight:
                     FontWeight.w700, fontSize: 30, color: Colors.black))),
+                SizedBox(height: 19,),
+                Text("Control and optimize your energy usage effortlessly",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                      textStyle: TextStyle(fontWeight:
+                      FontWeight.w400, fontSize: 18, color: Color(0xff4B5563) ))),
               ],
             ),
           ),
         ),
-      ),
-    );
+      );
+
   }
 }

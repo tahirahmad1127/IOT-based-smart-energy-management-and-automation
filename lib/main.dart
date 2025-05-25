@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:news_app/views/Home.dart';
 import 'package:news_app/views/login.dart';
 import 'package:news_app/views/onboarding_screen.dart';
 import 'package:news_app/views/register.dart';
 import 'package:news_app/views/sensor_data.dart';
 import 'package:news_app/views/splash_screen.dart';
+import 'package:news_app/views/terms_and_conditions.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SensorDataScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:news_app/views/onboarding-screens/page1.dart';
 import 'package:news_app/views/onboarding-screens/page2.dart';
 import 'package:news_app/views/onboarding-screens/page4.dart';
@@ -18,9 +19,7 @@ class _SplashScreenState extends State<OnboardingScreen> {
   PageController _controller = PageController();
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
+    return Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -50,13 +49,18 @@ class _SplashScreenState extends State<OnboardingScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: SmoothPageIndicator(controller: _controller, count: 4),
+                  child: SmoothPageIndicator(
+                    effect: ScrollingDotsEffect(
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      dotColor: Colors.black26
+                    ),
+                      controller: _controller, count: 4),
                 )
               ],
             ),
 
         ),
-      ),
-    );
+      );
   }
 }

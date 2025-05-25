@@ -15,6 +15,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
 
@@ -41,15 +42,13 @@ class _SignupScreenState extends State<SignupScreen> {
           builder: (context) => AlertDialog(
             backgroundColor: Colors.cyan,
             title: const Text(
-                style: TextStyle(
-                  color: Colors.black
-                ),
-                'Verify Email'),
+              'Verify Email',
+              style: TextStyle(color: Colors.black),
+            ),
             content: const Text(
-              style: TextStyle(
-                color: Colors.black
-              ),
-                'A verification email has been sent. Please verify before logging in.'),
+              'A verification email has been sent. Please verify before logging in.',
+              style: TextStyle(color: Colors.black),
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -109,11 +108,11 @@ class _SignupScreenState extends State<SignupScreen> {
                             fontWeight: FontWeight.bold)),
                     const SizedBox(height: 5),
                     const Text('Create a new account',
-                        style:
-                        TextStyle(color: Colors.white70, fontSize: 18)),
+                        style: TextStyle(color: Colors.white70, fontSize: 18)),
                     const SizedBox(height: 20),
                     _buildTextField(_nameController, 'Enter your name',
-                        Icons.person_outline),
+                        Icons.person_outline,
+                        validator: _validateName),
                     const SizedBox(height: 12),
                     _buildTextField(_emailController, 'Enter your email',
                         Icons.email_outlined,
@@ -122,12 +121,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(height: 12),
                     _buildPasswordField(),
                     const SizedBox(height: 12),
+                    _buildConfirmPasswordField(),
+                    const SizedBox(height: 12),
                     _buildTextField(_phoneController, 'Enter your phone',
                         Icons.phone_outlined,
-                        keyboardType: TextInputType.phone),
+                        keyboardType: TextInputType.phone,
+                        validator: _validatePhone),
                     const SizedBox(height: 12),
                     _buildTextField(_addressController, 'Enter your address',
-                        Icons.location_on_outlined),
+                        Icons.location_on_outlined,
+                        validator: _validateAddress),
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
@@ -171,7 +174,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -210,10 +212,13 @@ class _SignupScreenState extends State<SignupScreen> {
     return TextFormField(
       controller: _passwordController,
       obscureText: _obscurePassword,
+      enableInteractiveSelection: false, // disables copy/paste/select
       validator: (value) {
         if (value == null || value.isEmpty) return 'Please enter a password';
-        if (value.length < 6) return 'Password must be at least 6 characters';
-        return null;
+        final passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$');
+        return passwordRegex.hasMatch(value)
+            ? null
+            : 'Password must be at least 8 characters long,\ninclude uppercase, lowercase, number and special character.';
       },
       decoration: InputDecoration(
         hintText: 'Enter your password',
@@ -241,15 +246,75 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+
+  Widget _buildConfirmPasswordField() {
+    return TextFormField(
+      controller: _confirmPasswordController,
+      obscureText: _obscurePassword,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please confirm your password';
+        }
+        if (value != _passwordController.text) {
+          return 'Passwords do not match';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        hintText: 'Confirm your password',
+        prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
   String? _requiredField(String? value) {
-    return (value == null || value.isEmpty)
+    return (value == null || value.trim().isEmpty)
         ? 'This field is required'
         : null;
   }
 
+  String? _validateName(String? value) {
+    if (value == null || value.trim().isEmpty) return 'Please enter your name';
+    if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+      return 'Only characters allowed';
+    }
+    return null;
+  }
+
   String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your email';
+    if (value == null || value.trim().isEmpty) return 'Please enter your email';
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(value) ? null : 'Please enter a valid email';
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) return 'Please enter a password';
+    final passwordRegex = RegExp(
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$');
+    return passwordRegex.hasMatch(value)
+        ? null
+        : 'Password must be at least 8 characters,\ninclude upper & lower case, number, special character';
+  }
+
+  String? _validatePhone(String? value) {
+    if (value == null || value.isEmpty) return 'Please enter your phone number';
+    final phoneRegex = RegExp(r'^03\d{9}$'); // starts with 03 + 9 digits = 11 digits total
+    if (!phoneRegex.hasMatch(value)) {
+      return 'Phone number must start with 03 and be 11 digits long';
+    }
+    return null;
+  }
+
+
+  String? _validateAddress(String? value) {
+    if (value == null || value.trim().isEmpty) return 'Please enter address';
+    if (value.trim().length < 10) return 'Address must be at least 10 characters';
+    return null;
   }
 }

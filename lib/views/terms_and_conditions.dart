@@ -12,9 +12,9 @@ class TermsAndConditions extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0xff000000),
             Color(0xff23ABC3),
-            Color(0xffFFFFFF),
+            Color(0xff23ABC3),
+            Color(0xff23ABC3),
           ],
         ),
       ),
@@ -27,9 +27,8 @@ class TermsAndConditions extends StatelessWidget {
             'Terms & Conditions',
             style: GoogleFonts.poppins(
               textStyle: const TextStyle(
-                color: Colors.white70,
-                fontWeight: FontWeight.w600,
-
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -38,8 +37,19 @@ class TermsAndConditions extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: Text(
-            '''
+          child: ShaderMask(
+            shaderCallback: (bounds) => const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white,
+                Colors.white,
+                Colors.white,
+              ],
+            ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
+            blendMode: BlendMode.srcIn,
+            child: Text(
+              '''
 Welcome to Voltify!
 
 By using our app, you agree to the following terms:
@@ -59,13 +69,14 @@ By using our app, you agree to the following terms:
 If you do not agree with any part of these terms, please discontinue the use of the app.
 
 Thank you for choosing Voltify!
-            ''',
-            style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                fontSize: 14,
-
-                color: Colors.black87,
-                height: 1.2,
+              ''',
+              style: GoogleFonts.poppins(
+                textStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white, // actual color doesn't matter, it gets masked
+                  height: 1.2,
+                ),
               ),
             ),
           ),

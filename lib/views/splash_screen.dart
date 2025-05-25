@@ -21,9 +21,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void initState() {
     super.initState();
 
-    // Gradient rotation
     _gradientController = AnimationController(
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 7),
       vsync: this,
     )..repeat(reverse: true);
 
@@ -42,25 +41,24 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       ),
     ]).animate(CurvedAnimation(parent: _gradientController, curve: Curves.easeInOut));
 
-    // Slide animations
     _slideController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
 
     _logoOffset = Tween<Offset>(
-      begin: const Offset(0, -1), // From top
+      begin: const Offset(0, -1),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOut));
 
     _textOffset = Tween<Offset>(
-      begin: const Offset(0, 1), // From bottom
+      begin: const Offset(0, 1),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOut));
 
     _slideController.forward();
 
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const OnboardingScreen()),
@@ -101,21 +99,20 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             },
           ),
 
-          // Top-right bulb gif
-          Positioned(
-            top: 0,
-            right: 0,
-            child: Transform.rotate(
-              angle: 3.1416,
+          // Centered background GIF with opacity
+          Center(
+            child: Opacity(
+              opacity: 0.2,
               child: Image.asset(
-                "assets/animations/bulb.gif",
-                width: 120,
-                height: 100,
+                "assets/animations/3.gif",
+                width: 350,
+                height: 350,
+                fit: BoxFit.cover,
               ),
             ),
           ),
 
-          // Logo & App name animation
+          // Logo & App name animation on top
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

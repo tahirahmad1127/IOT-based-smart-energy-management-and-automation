@@ -27,6 +27,7 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
 dependencies:
   flutter:
     sdk: flutter
@@ -44,6 +45,9 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   firebase_database: ^11.3.4
   syncfusion_flutter_gauges: ^22.2.12
+  flutter_launcher_icons: ^0.13.1
+  video_player: ^2.9.5
+
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +59,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+flutter_icons: # <-- This must be outside the "flutter" section
+  android: true
+  ios: true
+  image_path: "assets/images/logo1.jpg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -101,3 +109,4 @@ flutter:
   assets:
      - assets/images/
      - assets/animations/
+     - assets/videos/
